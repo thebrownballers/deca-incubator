@@ -1,0 +1,85 @@
+<html>
+
+<head>
+    <title> Rectangle </title>
+    <nav>
+      <div class="nav-wrapper light blue">
+        <a href="#" class="brand-logo center">Rectangle</a>
+        <ul id="nav-mobile" class="left hide-on-med-and-down">
+        </ul>
+      </div>
+    </nav>
+    <link rel="stylesheet" href="../style.css">
+    <script src="./cookies.js" charset="utf-8"></script>
+
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+
+<body>
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+
+    <style>
+      #signIn {
+          position: relative;
+          top: 100px;
+          left: 50%;
+          margin-top: -50px;
+          margin-left: -100px;
+      }
+    </style>
+    <a class="waves-effect light blue waves-light btn" id="signIn" onclick="signWithGoogle()">
+      Sign In With Google
+    </a>
+    <strong id="loginstate">
+      Not Logged In
+    </strong>
+
+    <script src="https://www.gstatic.com/firebasejs/3.8.0/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyByJcnr0g4wI-G8BmYIBrHamuV1eHLUkNU",
+            authDomain: "decaincubator.firebaseapp.com",
+            databaseURL: "https://decaincubator.firebaseio.com",
+            projectId: "decaincubator",
+            storageBucket: "decaincubator.appspot.com",
+            messagingSenderId: "944357691324"
+        };
+        firebase.initializeApp(config);
+    </script>
+    <script type="text/javascript">
+        var loggedIn = readCookie("loggedIn");
+        console.log(loggedIn)
+        function signWithGoogle() {
+            var provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider).then(function(result) {
+                // This gives you a Google Access Token. You can use it to access the Google API.
+                var token = result.credential.accessToken;
+                // The signed-in user info.
+                var user = result.user;
+                // ...
+            }).catch(function(error) {
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                // The email of the user's account used.
+                var email = error.email;
+                // The firebase.auth.AuthCredential type that was used.
+                console.log(error.code, error.message)
+            })
+            loggedIn = createCookie("loggedIn", true, 365)
+            document.getElementById("loginstate").innerHTML = "Logged In"
+        }
+    </script>
+
+</body>
+
+</html>
