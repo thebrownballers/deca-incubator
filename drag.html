@@ -2,26 +2,86 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <title></title>
-    <link rel="stylesheet" href="style.css">
-    <script src="drag.js" charset="utf-8"></script>
+  <meta charset="utf-8">
+  <title>Drag</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    #diagramContainer {
+      padding: 20px;
+      width: 80%;
+      height: 400px;
+      border: 1px solid gray;
+    }
+
+    .item {
+      height: 80px;
+      width: 80px;
+      border: 1px solid blue;
+    }
+  </style>
 </head>
 
 <body>
+  <h3> Instructions: </h3>
+  <p> Drag and drop the boxes/buttons to the rectangular area and turn on connect mode when ready, then click on the two buttons that you want to be connected </p>
+  <button id="connectMode" onclick="toggleConnect()"> Connect Mode: Off </button>
+  <div id="addtheboyback" style="position: fixed;">
+    <button id="drag1" onclick="onClickConnect(this.id)" class="drag" class="item" draggable="true"> Block 1 </button>
+    <button id="block1" onclick=" onClickConnect(this.id)" class="drag" class="item" draggable="true"> Block 2 </button>
+  </div>
+  <span id="bigboybox">
+    </span>
+  <canvas id="dragBox">
 
-    <div id="addtheboyback" style="position: fixed;">
-        <button id="drag1" class="drag" draggable="true" > Block 1 </button>
-        <br>
-        <button id="block1" class = "drag" draggable="true"> Block 2 </button>
-    </div>
-    <div id="bigboybox">
-      
-    </div>
-    <div id="dragBox" >
+    </canvas>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jsPlumb/1.4.1/jquery.jsPlumb-1.4.1-all-min.js"></script>
+  <script src="drag.js" charset="utf-8"></script>
+  <script>
+    var connectMode = false;
+    var cM = document.getElementById("connectMode");
+    var item1 = null;
+    var item2 = null;
 
-    </div>
-    <br>
+    function toggleConnect() {
+      if (connectMode) {
+        connectMode = false;
+        cM.innerHTML = "Connect Mode: Off"
+      } else {
+        connectMode = true;
+        cM.innerHTML = "Connect Mode: On"
+      }
+    }
+
+    function onClickConnect(b) {
+      if (connectMode) {
+        if (item1 == null && item2 == null) {
+          item1 = b;
+          console.log(item1)
+        } else if (item2 == null) {
+          item2 = b;
+          console.log(item1, item2)
+          connect(item1, item2);
+          item1 = undefined;
+          item2 = undefined;
+        }
+      }
+    }
+
+    function connect(i1, i2) {
+      jsPlumb.connect({
+        source: i1,
+        target: i2,
+        endpoint: "Rectangle"
+      });
+
+      jsPlumb.draggable(i1);
+      jsPlumb.draggable(i2);
+      $("#" + i1).removeClass("ui-draggable")
+      $("#" + i2).removeClass("ui-draggable")
+    }
+  </script>
 </body>
 
 </html>

@@ -4,7 +4,8 @@ var _offsetX = 0; // current element offset
 var _offsetY = 0;
 var _dragElement; // needs to be passed from OnMouseDown to OnMouseMove
 var _oldZIndex = 0;
-
+var canvas = document.getElementById("dragBox");
+var ctx = canvas.getContext("2d");
 
 
 function InitDragDrop() {
