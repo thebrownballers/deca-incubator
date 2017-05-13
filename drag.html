@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <title>Drag</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="./css/materialize.css">
   <style>
     #diagramContainer {
       padding: 20px;
@@ -18,6 +19,9 @@
       width: 80px;
       border: 1px solid blue;
     }
+    #dragBox{
+      position: absolute;
+    }
   </style>
 </head>
 
@@ -25,10 +29,15 @@
   <h3> Instructions: </h3>
   <p> Drag and drop the boxes/buttons to the rectangular area and turn on connect mode when ready, then click on the two buttons that you want to be connected </p>
   <button id="connectMode" onclick="toggleConnect()"> Connect Mode: Off </button>
-  <div id="addtheboyback" style="position: fixed;">
-    <button id="drag1" onclick="onClickConnect(this.id)" class="drag" class="item" draggable="true"> Block 1 </button>
-    <button id="block1" onclick=" onClickConnect(this.id)" class="drag" class="item" draggable="true"> Block 2 </button>
-  </div>
+  <ul id="addtheboyback" style="position: fixed;">
+    <li id="data">
+    <button id="data1" onclick="onClickConnect(this.id)" class="drag" class="item" draggable="true"> Data </button> </li>
+    <li id="clustering"> <button id="clustering1" onclick=" onClickConnect(this.id)" class="drag" class="item" draggable="true"> Clustering </button> </li>
+    <li id="prediction"> <button id="prediction1" onclick=" onClickConnect(this.id)" class="drag" class="item" draggable="true"> Prediction </button> </li>
+    <li id="reduction"> <button id="reduction1" onclick=" onClickConnect(this.id)" class="drag" class="item" draggable="true"> Reduction </button> </li>
+    <li id="result"> <button id="result1" onclick=" onClickConnect(this.id)" class="drag" class="item" draggable="true"> Result </button> </li>
+    <li id="visualization"> <button id="visualization1" onclick=" onClickConnect(this.id)" class="drag" class="item" draggable="true"> Visuliazation </button> </li>
+  </ul>
   <span id="bigboybox">
     </span>
   <canvas id="dragBox">
@@ -82,6 +91,7 @@
       $("#" + i2).removeClass("ui-draggable")
     }
   </script>
+  <script src="./js/materialize.js" charset="utf-8"></script>
 </body>
 
 </html>

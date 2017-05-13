@@ -4,8 +4,7 @@ var _offsetX = 0; // current element offset
 var _offsetY = 0;
 var _dragElement; // needs to be passed from OnMouseDown to OnMouseMove
 var _oldZIndex = 0;
-var canvas = document.getElementById("dragBox");
-var ctx = canvas.getContext("2d");
+String.prototype.contains = function(it) { return this.indexOf(it) != -1; };
 
 
 function InitDragDrop() {
@@ -18,7 +17,7 @@ var target = e.target;
 
 // for IE, left click == 1
 // for Firefox, left click == 0
-if (e.button == 0 && target.className == 'drag') {
+if (e.button == 0 && target.className.contains('drag')) {
     // grab the mouse position
     _startX = e.clientX;
     _startY = e.clientY;
@@ -75,10 +74,11 @@ function OnMouseUp(e)
         var cln = _dragElement.cloneNode(true)
         var key = /[A-z]\D*/.exec(cln.id)
         var newId = key + (parseInt(cln.id.replace(key, "")) + 1)
+        console.log(key[0])
         cln.setAttribute("id", newId)
         cln.setAttribute("style","")
         document.getElementById("bigboybox").appendChild(_dragElement)
-        document.getElementById("addtheboyback").appendChild(cln)
+        document.getElementById(key).appendChild(cln)
       }
         _dragElement = null;
 

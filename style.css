@@ -2,9 +2,10 @@
     width: 70em;
     height: 100em;
     padding: 10px;
-    border: 1px solid #aaaaaa;
     left: 10em;
     z-index: -1;
-    position: absolute;
+
 }
-.drag { position: relative; }
+.drag {
+  position: relative;
+}
