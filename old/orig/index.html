@@ -1,0 +1,84 @@
+<html>
+
+<head>
+    <title> DDML </title>
+    <link rel="stylesheet" href="../style.css">
+    <script src="./cookies.js" charset="utf-8"></script>
+</head>
+
+<body ondrop="drop(event)" ondragover="allowDrop(event)">
+    <div id="beforeLoggin">
+        <button id="signIn" onclick="signWithGoogle()">
+      Sign In With Google
+    </button>
+    </div>
+    <div id="afterLoggin" style="display:none;">
+      <div id="dragBox" ondragstart="drag(event)" draggable="true"></div>
+      <br>
+
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/3.8.0/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyByJcnr0g4wI-G8BmYIBrHamuV1eHLUkNU",
+            authDomain: "decaincubator.firebaseapp.com",
+            databaseURL: "https://decaincubator.firebaseio.com",
+            projectId: "decaincubator",
+            storageBucket: "decaincubator.appspot.com",
+            messagingSenderId: "944357691324"
+        };
+        firebase.initializeApp(config);
+    </script>
+    <script type="text/javascript">
+        var loggedIn = readCookie("loggedIn");
+        console.log(loggedIn)
+        var beforeLoggin = document.getElementById('beforeLoggin')
+        var afterLoggin = document.getElementById("afterLoggin")
+        if (loggedIn == "true") {
+            beforeLoggin.setAttribute("style", "display:none")
+            afterLoggin.setAttribute("style", "display:inline")
+        }
+
+        function signWithGoogle() {
+            var provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider).then(function(result) {
+                // This gives you a Google Access Token. You can use it to access the Google API.
+                var token = result.credential.accessToken;
+                // The signed-in user info.
+                var user = result.user;
+                // ...
+                beforeLoggin.setAttribute("style", "display:none")
+                afterLoggin.setAttribute("style", "display:inline")
+            }).catch(function(error) {
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                // The email of the user's account used.
+                var email = error.email;
+                // The firebase.auth.AuthCredential type that was used.
+                console.log(error.code, error.message)
+            })
+            loggedIn = createCookie("loggedIn", true, 365)
+
+
+        }
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            ev.target.appendChild(document.getElementById(data));
+        }
+    </script>
+
+</body>
+
+</html>

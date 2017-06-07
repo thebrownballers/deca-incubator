@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Rectangle</title>
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="https://www.gstatic.com/firebasejs/3.8.0/firebase.js"></script>
+
+    <nav>
+      <div class="nav-wrapper cyan">
+        <a href="#!" class="brand-logo center">Rectangle</a>
+        <ul class="left hide-on-med-and-down">
+          <li><a href="#modal1"><i class="material-icons left">add</i>New</a></li>
+          <li><a href="docs.html">Docs</a></li>
+          <li class="active"><a href="startup.html">Projects</a></li>
+        </ul>
+      </div>
+    </nav>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyByJcnr0g4wI-G8BmYIBrHamuV1eHLUkNU",
+        authDomain: "decaincubator.firebaseapp.com",
+        databaseURL: "https://decaincubator.firebaseio.com",
+        projectId: "decaincubator",
+        storageBucket: "decaincubator.appspot.com",
+        messagingSenderId: "944357691324"
+      };
+      firebase.initializeApp(config);
+    </script>
+    <script src="https://cdn.firebase.com/libs/firebaseui/1.0.1/firebaseui.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/1.0.1/firebaseui.css" />
+    </head>
+  <body class="white">
+        <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <!-- The surrounding HTML is left untouched by FirebaseUI.
+         Your app may use that space for branding, controls and other customizations.-->
+    <h4 style="padding-left: 1%;"> Projects </h4>
+    <script>
+    $(document).ready(function(){
+      // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+      $('.modal').modal();
+    });
+
+
+    firebase.auth().onAuthStateChanged(function(user){
+      var user = firebase.auth().currentUser
+      //console.log(user)
+    })
+
+    function createProjectCard(name,val){
+      var div = document.createElement("div");
+      div.innerHTML = "<div class=\"row\"> <div class=\"col s12 m6\"> <div class=\"card blue-grey darken-1\"> <div class=\"card-content white-text\"> <span class=\"card-title\">" + name + "</span> </div> <div class=\"card-action\"> <a href=\"main.html?=" + name + "\">Go To Project</a> </div> </div> </div> </div>"
+      document.body.appendChild(div);
+
+      console.log('done')
+
+
+    }
+
+
+
+    setTimeout(function(){
+
+      function readProjects(callback) {
+        var userId = firebase.auth().currentUser.uid;
+        var ref = firebase.database().ref('/users/' + userId);
+
+        ref.once( "value", function(snapshot) {
+          var peep = snapshot.val();
+          console.log(peep)
+          $("#progbar").remove();
+            // error will be null, and peep will contain the snapshot
+            callback(null, peep);
+          }, function (error) {
+            // error wil be an Object
+            callback(error)
+        });
+      }
+
+      readProjects(function (err, result) {
+        console.log(result);
+        for(var key in result.projects) {
+          console.log(key)
+          if (result.projects.hasOwnProperty(key)) {
+            createProjectCard(result.projects[key].id,22)
+          }
+
+
+        }
+      });
+
+
+    }, 2000);
+
+    function createnewproj(){
+      var name = document.getElementById("name").value;
+
+      var uid = firebase.auth().currentUser.uid;
+
+      // A post entry.
+      var postData = {
+        id: name,
+      };
+
+      // Get a key for a new Post.
+      var newPostKey = firebase.database().ref('users/' + uid  + '/projects/').child('posts').push().key;
+
+      var updates = {};
+      updates['/users/' + uid + '/projects/' + newPostKey] = postData;
+
+      firebase.database().ref().update(updates);
+
+      window.location.href = 'main.html?=' + name;
+
+      return;
+    }
+
+    </script>
+
+    <div id="progbar" class="progress">
+      <div class="indeterminate"></div>
+    </div>
+
+    <!-- Modal Structure -->
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+      <h4>New Project</h4>
+      <div class="row">
+        <form class="col s12">
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="name" type="text">
+              <label for="name">Project Name</label>
+            </div>
+        </form>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a href="#" onclick="createnewproj()" class="modal-action modal-close waves-effect waves-green btn-flat">Create</a>
+    </div>
+  </div>
+
+  </body>
+</html>
