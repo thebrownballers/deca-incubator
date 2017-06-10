@@ -49,9 +49,9 @@
   <a id="connectMode" class="waves-effect blue waves-light btn" onclick="toggleConnect()"> Connect Mode: Off </a>
   <a id="execute" onclick="execute()" class="waves-effect orange waves-light btn"> Run </a>
   <ul id="addtheboyback" class="side-nav fixed" style="position: fixed; width: 200px;">
-    <li id="data"> <a id="data1" data-target="modal1" onclick="onClickConnect(this.id)" class="drag  btn-flat" class="item" draggable="true"> Data </a> </li>
+    <li id="data"> <a id="data1" data-target="dataModal" onclick="onClickConnect(this.id)" class="drag  btn-flat" class="item" draggable="true"> Data </a> </li>
     <li id="clustering"> <a id="clustering1" onclick=" onClickConnect(this.id)" class="drag  btn-flat" class="item" draggable="true"> Clustering </a> </li>
-    <li id="prediction"> <a id="prediction1" data-target="modal2" onclick=" onClickConnect(this.id)" class="drag   btn-flat" class="item" draggable="true"> Prediction </a> </li>
+    <li id="prediction"> <a id="prediction1" data-target="predictionModal" onclick=" onClickConnect(this.id)" class="drag   btn-flat" class="item" draggable="true"> Prediction </a> </li>
     <li id="reduction"> <a id="reduction1" onclick=" onClickConnect(this.id)" class="drag   btn-flat" class="item" draggable="true"> Reduction </a> </li>
     <li id="result"> <a id="result1" onclick=" onClickConnect(this.id)" class="drag btn-flat" class="item" draggable="true"> Result </a> </li>
     <li id="visualization"> <a id="visualization1" onclick=" onClickConnect(this.id)" class="drag  btn-flat" class="item" draggable="true"> Visualization </a> </li>
@@ -66,13 +66,7 @@
   <script src="http://cdnjs.cloudflare.com/ajax/libs/jsPlumb/1.4.1/jquery.jsPlumb-1.4.1-all-min.js"></script>
   <script src="drag.js" charset="utf-8"></script>
   <script>
-  $(document).ready(function(){
-    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-    $('.modal').modal();
-  });
-  $(document).ready(function() {
-  $('select').material_select();
-});
+
 
      var connectedKids = [];
      var connectMode = false;
@@ -81,6 +75,10 @@
      var item2 = null;
 
      var execute_times = 0;
+
+     $(document).ready(function() {
+     $('select').material_select();
+   });
 
      function execute(){
        execute_times++;
@@ -143,6 +141,12 @@
            item2 = undefined;
          }
        }
+       else {
+         var key = /[A-z]\D*/.exec(b)
+         key[0] += "Modal"
+         console.log(key)
+         $("#" + key[0]).modal();
+       }
      }
 
      function connect(i1, i2) {
@@ -172,7 +176,7 @@
   <script src="./js/materialize.js" charset="utf-8"></script>
 
   <!-- Modal Structure -->
-<div id="modal1" class="modal">
+<div id="dataModal" class="modal">
   <div class="modal-content">
     <h4>Upload Data</h4>
     <form action="upload.php" method="post" enctype="multipart/form-data">
@@ -194,7 +198,7 @@
   </div>
 </div>
 
-<div id="modal2" class="modal">
+<div id="predictionModal" class="modal">
   <div class="modal-content">
     <h4>Prediction</h4>
     <div class="input-field col s12">
